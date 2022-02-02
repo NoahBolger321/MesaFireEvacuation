@@ -48,11 +48,15 @@ DOOR_SIZE = get_door_size(floorplan)
 # scale Human agent mobility and max speed to reflect size of doors
 class Mobility(IntEnum):
     INCAPACITATED = 0 * DOOR_SIZE
-    NORMAL = 1 * DOOR_SIZE
-    PANIC = 2 * DOOR_SIZE
+    NORMAL = 0 * DOOR_SIZE
+    PANIC = 0 * DOOR_SIZE
 Human.Mobility = Mobility
 Human.MAX_SPEED = 2.0 * DOOR_SIZE
 FireEvacuation.MAX_SPEED = int(2 * DOOR_SIZE)
+# Fire.smoke_radius = int(DOOR_SIZE)
+# Smoke.smoke_radius = int(DOOR_SIZE)
+# Smoke.spread_rate = int(DOOR_SIZE // 4)
+# Smoke.spread_threshold = int(DOOR_SIZE)
 
 
 # Creates a visual portrayal of our model in the browser interface
