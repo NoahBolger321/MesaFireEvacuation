@@ -1,5 +1,8 @@
 import cv2
+import sys
 import numpy as np
+
+sys.path.append("../")
 from fire_evacuation.symbols_to_obstacles import add_obstacles_to_GAN
 
 
