@@ -69,10 +69,13 @@ def get_obstacle_image_layer(img):
     )
 
 combined_img = add_obstacles_to_GAN("GAN_label.png")
-combined_img = cv2.pyrDown(cv2.pyrDown(cv2.pyrDown(combined_img)))
+
+height, width = combined_img.shape[:2]
+while height > 200 and width > 200:
+    combined_img = cv2.pyrDown(combined_img)
+    height, width = combined_img.shape[:2]
+
 cv2.imwrite("../input/images/downsample.png", combined_img)
-
-
 txt_floorplan = np.zeros(combined_img.shape[:2], 'U1')
 txt_floorplan.fill('_')
 
