@@ -53,10 +53,10 @@ class Mobility(IntEnum):
 Human.Mobility = Mobility
 Human.MAX_SPEED = 2.0 * DOOR_SIZE
 FireEvacuation.MAX_SPEED = int(2 * DOOR_SIZE)
-# Fire.smoke_radius = int(DOOR_SIZE)
-# Smoke.smoke_radius = int(DOOR_SIZE)
-# Smoke.spread_rate = int(DOOR_SIZE // 4)
-# Smoke.spread_threshold = int(DOOR_SIZE)
+Fire.smoke_radius = int(DOOR_SIZE)
+Smoke.smoke_radius = int(DOOR_SIZE)
+Smoke.spread_rate = int(DOOR_SIZE // 4)
+Smoke.spread_threshold = 5*int(DOOR_SIZE)
 
 
 # Creates a visual portrayal of our model in the browser interface
