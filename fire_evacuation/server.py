@@ -15,7 +15,7 @@ def get_door_size(floorplan):
     # create a zeros array same size as the txt floorplan
     floorplan_labels = np.zeros(floorplan.shape[:2], dtype=np.uint8)
     # wherever we have an "E" (door), set the value equal to 1
-    floorplan_labels[np.where(floorplan == "E")] = 1
+    floorplan_labels[np.where(floorplan == "D")] = 1
     # convert to numpy uint8
     np.uint8(floorplan_labels)
 
@@ -145,7 +145,6 @@ collaboration_chart = ChartModule(
         {"Label": "Morale Collaboration", "Color": "pink"},
     ]
 )
-
 
 canvas_element = CanvasGrid(fire_evacuation_portrayal, height, width, 800, 800)
 f.close()

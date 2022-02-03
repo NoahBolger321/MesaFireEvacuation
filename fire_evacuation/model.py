@@ -3,7 +3,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import time
-
+import random
 from mesa import Model
 from mesa.datacollection import DataCollector
 from mesa.space import Coordinate, MultiGrid
@@ -72,7 +72,7 @@ class FireEvacuation(Model):
         self.doors: dict[Coordinate, Door] = {}
 
         # If random spawn is false, spawn_pos_list will contain the list of possible spawn points according to the floorplan
-        self.random_spawn = random_spawn
+        self.random_spawn = False
         self.spawn_pos_list: list[Coordinate] = []
 
         # Load floorplan objects
@@ -94,7 +94,8 @@ class FireEvacuation(Model):
             elif value == "D":
                 floor_object = Door(pos, self)
                 self.doors[pos] = floor_object
-            elif value == "S":
+                self.spawn_pos_list.append(pos)
+            elif value == "S" or value == "_":
                 self.spawn_pos_list.append(pos)
 
             if floor_object:
@@ -151,7 +152,8 @@ class FireEvacuation(Model):
             if self.random_spawn:  # Place human agents randomly
                 pos = self.grid.find_empty()
             else:  # Place human agents at specified spawn locations
-                pos = np.random.choice(self.spawn_pos_list)
+                i = random.randint(0, len(self.spawn_pos_list)-1)
+                pos = self.spawn_pos_list[i]
 
             if pos:
                 # Create a random human

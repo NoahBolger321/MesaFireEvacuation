@@ -2,10 +2,7 @@ import cv2
 import sys
 import numpy as np
 
-
 sys.path.append("../")
-from fire_evacuation.symbols_to_obstacles import add_obstacles_to_GAN
-
 
 from fire_evacuation.symbols_to_obstacles import add_obstacles_to_GAN
 from fire_evacuation.image_boundary import get_final_mask
@@ -17,11 +14,7 @@ GREEN_THRES = [(35, 50, 50), (85, 255, 255)]
 BLACK_THRES = [(0, 0, 0), (0, 0, 0)]
 
 def add_border_img(img):
-    bordersize = 10
-    row, col = img.shape[:2]
-    bottom = img[row-2:row, 0:col]
-    mean = cv2.mean(bottom)[0]
-
+    bordersize = 20
     border = cv2.copyMakeBorder(
         img,
         top=bordersize,
@@ -29,7 +22,7 @@ def add_border_img(img):
         left=bordersize,
         right=bordersize,
         borderType=cv2.BORDER_CONSTANT,
-        value=[mean, mean, mean]
+        value=[255, 255, 255]
     )
     
     return border
@@ -101,6 +94,7 @@ height, width = combined_img.shape[:2]
 while height > 200 and width > 200:
     combined_img = cv2.pyrDown(combined_img)
     height, width = combined_img.shape[:2]
+
 
 txt_floorplan = np.zeros(combined_img.shape[:2], 'U1')
 txt_floorplan.fill('E')
