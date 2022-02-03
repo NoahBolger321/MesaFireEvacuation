@@ -1,8 +1,10 @@
+import os
 import cv2
 import sys
 import numpy as np
 
 sys.path.append("../")
+ROOT_DIR = os.path.abspath(os.curdir)
 
 from fire_evacuation.symbols_to_obstacles import add_obstacles_to_GAN
 from fire_evacuation.image_boundary import get_final_mask
@@ -86,28 +88,30 @@ def get_obstacle_image_layer(img):
         [BLACK_THRES]
     )
 
-combined_img = add_obstacles_to_GAN("GAN_label.png")
 
-combined_img = add_border_img(combined_img)
+def convert(GAN_file):
+    combined_img = add_obstacles_to_GAN(GAN_file)
 
-height, width = combined_img.shape[:2]
-while height > 200 and width > 200:
-    combined_img = cv2.pyrDown(combined_img)
+    combined_img = add_border_img(combined_img)
+
     height, width = combined_img.shape[:2]
+    while height > 200 and width > 200:
+        combined_img = cv2.pyrDown(combined_img)
+        height, width = combined_img.shape[:2]
 
 
-txt_floorplan = np.zeros(combined_img.shape[:2], 'U1')
-txt_floorplan.fill('E')
+    txt_floorplan = np.zeros(combined_img.shape[:2], 'U1')
+    txt_floorplan.fill('E')
 
-walls = get_wall_image_layer(combined_img)
-doors = get_door_image_layer(combined_img)
-obstacles = get_obstacle_image_layer(combined_img)
+    walls = get_wall_image_layer(combined_img)
+    doors = get_door_image_layer(combined_img)
+    obstacles = get_obstacle_image_layer(combined_img)
 
-final_mask = get_final_mask(combined_img, "GAN_label.png" )
+    final_mask = get_final_mask(combined_img, GAN_file)
 
-txt_floorplan[np.where(final_mask == 0)[:2]] = "_"
-txt_floorplan[np.where(walls != (255, 255, 255))[:2]] = "W"
-txt_floorplan[np.where(doors != (255, 255, 255))[:2]] = "D"
-txt_floorplan[np.where(obstacles != (255, 255, 255))[:2]] = "F"
+    txt_floorplan[np.where(final_mask == 0)[:2]] = "_"
+    txt_floorplan[np.where(walls != (255, 255, 255))[:2]] = "W"
+    txt_floorplan[np.where(doors != (255, 255, 255))[:2]] = "D"
+    txt_floorplan[np.where(obstacles != (255, 255, 255))[:2]] = "F"
 
-np.savetxt(f"floorplans/test_floorplan.txt", txt_floorplan, fmt="%s")
+    np.savetxt(f"{ROOT_DIR}/fire_evacuation/floorplans/test_floorplan.txt", txt_floorplan, fmt="%s")

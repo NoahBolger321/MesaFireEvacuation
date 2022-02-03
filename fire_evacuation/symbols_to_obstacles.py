@@ -1,15 +1,16 @@
+import os
 import cv2
 import numpy as np
 
 # list of non-navigable obstacles in a floorplan
 OBSTACLES = ["bath", "sink", "double sink", "toilet", "desk1", "row_desk_attched_wall", "rectangular-sink",
              "round-table_with_seat", "washroom-sink", "room-sink", "chair", "couch", "bed"]
-
-
+ROOT_DIR = os.path.abspath(os.curdir)
+print(ROOT_DIR)
 def get_classes():
     class_id = 0
     id_to_class = {}
-    with open(f"../input/labels/classes.txt") as f:
+    with open(f"{ROOT_DIR}/input/labels/classes.txt") as f:
         classes = f.readlines()
         for c in classes:
             id_to_class[class_id] = c.strip("\n")
@@ -35,7 +36,7 @@ def unconvert(class_id, width, height, x, y, w, h):
 
 def get_symbol_coords(height, width, symbol_labels):
     labels_list = []
-    with open(f"../input/labels/{symbol_labels}") as f:
+    with open(f"{ROOT_DIR}/input/labels/{symbol_labels}") as f:
         labels = f.readlines()
         for l in labels:
             label_comps = l.split(" ")
@@ -44,8 +45,7 @@ def get_symbol_coords(height, width, symbol_labels):
     return labels_list
 
 
-def get_obstacle_img(fp_filename):
-    fp_img = cv2.imread(f"../input/images/{fp_filename}")
+def get_obstacle_img(fp_img):
     height, width = fp_img.shape[:2]
 
     img = np.zeros([height, width, 3], dtype=np.uint8)
@@ -65,8 +65,8 @@ def get_obstacle_img(fp_filename):
 
 
 def add_obstacles_to_GAN(gan_filename):
-    gan_img = cv2.imread(f"../input/labels/{gan_filename}")
-    obstacle_img = get_obstacle_img("GAN_image.png")
+    gan_img = cv2.imread(gan_filename)
+    obstacle_img = get_obstacle_img(gan_img)
 
     gan_img[np.where(obstacle_img == 0)] = 0
 

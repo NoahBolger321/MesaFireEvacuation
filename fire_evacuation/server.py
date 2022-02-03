@@ -1,4 +1,5 @@
 import os
+import glob
 import cv2
 import numpy as np
 from os import listdir, path
@@ -9,7 +10,7 @@ from mesa.visualization.UserParam import UserSettableParameter
 
 from .model import FireEvacuation
 from .agent import FireExit, Wall, Furniture, Fire, Smoke, Human, Sight, Door, DeadHuman
-
+from .floorplan_convert import convert
 
 def get_door_size(floorplan):
     # create a zeros array same size as the txt floorplan
@@ -27,6 +28,17 @@ def get_door_size(floorplan):
     areas = list(stats[1:, -1])
     # to get door shape, average all door areas and take square root (makes assumption that doors are roughly square)
     return np.sqrt(np.mean(areas))
+
+# ++++++++++++++++++++++++++++++++++++++++++ MAKE API CALLS TO RUN GAN AND SYMBOL SPOTTING ++++++++++++++++++++++++++++++
+# run symbol spotting
+
+# create new txt floorplan
+
+# write to /floorplans
+# ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+GAN_image = "input/images/GAN.png"
+convert(GAN_image)
 
 # Get list of available floorplans
 floor_plans = [
