@@ -48,8 +48,8 @@ DOOR_SIZE = get_door_size(floorplan)
 # scale Human agent mobility and max speed to reflect size of doors
 class Mobility(IntEnum):
     INCAPACITATED = 0 * DOOR_SIZE
-    NORMAL = 0 * DOOR_SIZE
-    PANIC = 0 * DOOR_SIZE
+    NORMAL = 1 * DOOR_SIZE
+    PANIC = 2 * DOOR_SIZE
 Human.Mobility = Mobility
 Human.MAX_SPEED = 2.0 * DOOR_SIZE
 FireEvacuation.MAX_SPEED = int(2 * DOOR_SIZE)
