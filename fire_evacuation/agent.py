@@ -279,7 +279,7 @@ class Human(Agent):
     MAX_KNOWLEDGE = 1
 
     MAX_SHOCK = 1.0
-    MIN_SHOCK = 0.0
+    MIN_SHOCK = 1.0
     # Shock modifiers when encountering certain objects per object, per step
     DEFAULT_SHOCK_MODIFIER = -0.1  # The default amount the shock value will change per step
     SHOCK_MODIFIER_DEAD_HUMAN = 1.0
@@ -288,7 +288,7 @@ class Human(Agent):
     SHOCK_MODIFIER_AFFECTED_HUMAN = 0.1
 
     # The value the panic score must reach for an agent to start panic behaviour
-    PANIC_THRESHOLD = 0.8
+    PANIC_THRESHOLD = 1.1
 
     HEALTH_MODIFIER_FIRE = 0.2
     HEALTH_MODIFIER_SMOKE = 0.005
@@ -311,8 +311,8 @@ class Human(Agent):
         collaborates: bool,
         nervousness,
         experience,
-        believes_alarm: bool,
         model,
+        believes_alarm=True
     ):
         rand_id = get_random_id()
         super().__init__(rand_id, model)
@@ -1047,10 +1047,10 @@ class Human(Agent):
             elif self.mobility == Human.Mobility.PANIC:  # Panic
                 panic_score = self.get_panic_score()
 
-                if panic_score > 0.9 and np.random.random() < panic_score:
+                if panic_score > 1.0 and np.random.random() < panic_score:
                     # If they have above 90% panic score, test the score to see if they faint
                     print("Agent fainted!")
-                    self.incapacitate()
+                    # self.incapacitate()
                     return
                 # if (
                 #     np.random.random() < panic_score

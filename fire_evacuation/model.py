@@ -94,10 +94,8 @@ class FireEvacuation(Model):
             elif value == "D":
                 floor_object = Door(pos, self)
                 self.doors[pos] = floor_object
-                self.spawn_pos_list.append(pos)
             elif value == "S" or value == "_":
                 self.spawn_pos_list.append(pos)
-
             if floor_object:
                 self.grid.place_agent(floor_object, pos)
                 self.schedule.add(floor_object)
@@ -110,7 +108,7 @@ class FireEvacuation(Model):
             # If the location is empty, or there are no non-traversable agents
             if len(agents) == 0 or not any(not agent.traversable for agent in agents):
                 neighbors_pos = self.grid.get_neighborhood(
-                    pos, moore=True, include_center=True, radius=1
+                    pos, moore=True, include_center=True, radius=self.MIN_VISION
                 )
 
                 for neighbor_pos in neighbors_pos:
@@ -158,8 +156,7 @@ class FireEvacuation(Model):
             if pos:
                 # Create a random human
                 health = np.random.randint(self.MIN_HEALTH * 100, self.MAX_HEALTH * 100) / 100
-                speed = np.random.randint(self.MIN_SPEED, self.MAX_SPEED)
-
+                speed = self.MAX_SPEED // 2
                 if number_collaborators > 0:
                     collaborates = True
                     number_collaborators -= 1

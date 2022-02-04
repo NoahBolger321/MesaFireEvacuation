@@ -15,8 +15,8 @@ from .floorplan_convert import convert
 def get_door_size(floorplan):
     # create a zeros array same size as the txt floorplan
     floorplan_labels = np.zeros(floorplan.shape[:2], dtype=np.uint8)
-    # wherever we have an "E" (door), set the value equal to 1
-    floorplan_labels[np.where(floorplan == "D")] = 1
+    # wherever we have an "D" (door), set the value equal to 1
+    floorplan_labels[np.where(floorplan == "S")] = 1
     # convert to numpy uint8
     np.uint8(floorplan_labels)
 
@@ -65,6 +65,7 @@ class Mobility(IntEnum):
 Human.Mobility = Mobility
 Human.MAX_SPEED = 2.0 * DOOR_SIZE
 FireEvacuation.MAX_SPEED = int(2 * DOOR_SIZE)
+FireEvacuation.MIN_VISION = 1
 Fire.smoke_radius = int(DOOR_SIZE)
 Smoke.smoke_radius = int(DOOR_SIZE)
 Smoke.spread_rate = int(DOOR_SIZE // 4)
@@ -168,10 +169,10 @@ model_params = {
     ),
     "human_count": UserSettableParameter("number", "Number Of Human Agents", value=10),
     "collaboration_percentage": UserSettableParameter(
-        "slider", "Percentage Collaborating", value=50, min_value=0, max_value=100, step=10
+        "slider", "Percentage Collaborating", value=0, min_value=0, max_value=100, step=10
     ),
     "fire_probability": UserSettableParameter(
-        "slider", "Probability of Fire", value=0.1, min_value=0, max_value=1, step=0.01
+        "slider", "Probability of Fire", value=1.0, min_value=0, max_value=1, step=0.01
     ),
     "random_spawn": UserSettableParameter(
         "checkbox", "Spawn Agents at Random Locations", value=True
